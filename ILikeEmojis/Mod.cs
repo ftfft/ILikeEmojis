@@ -1,6 +1,5 @@
 ﻿using MelonLoader;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using VRC.UI.Elements.Menus;
 
@@ -16,8 +15,8 @@ namespace ILikeEmojis
         private static GameObject InteractionPauseButton;
         public override void OnApplicationStart() {
             Category = MelonPreferences.CreateCategory("ILikeEmojis");
-            EnableEmojiButton = Category.CreateEntry("EnableEmojiButton", false);
-            DisableInteractionPauseButton = Category.CreateEntry("DisableInteractionPauseButton", false);
+            EnableEmojiButton = Category.CreateEntry("EnableEmojiButton", true);
+            DisableInteractionPauseButton = Category.CreateEntry("DisableInteractionPauseButton", true);
             MelonCoroutines.Start(WaitForUiManagerInit());
         }
 
@@ -31,7 +30,7 @@ namespace ILikeEmojis
             EnableEmojiButton.OnValueChanged += (bool o, bool n) => emojiButton.active = n;
             DisableInteractionPauseButton.OnValueChanged += (bool o, bool n) => InteractionPauseButton.active = !n;
             LaunchPadQMMenu lm = rd.GetComponent<LaunchPadQMMenu>();
-            while (lm.field_Public_Button_6?.onClick?.m_Calls?.Count == 0) yield return null;
+            while (lm.field_Public_Button_6?.onClick?.m_Calls?.Count == 0) yield return null; // wait for the button to get its onClick assigned
             lm.field_Public_Button_6 = null;
             emojiButton.active = EnableEmojiButton.Value;
         }
